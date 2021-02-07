@@ -38,7 +38,7 @@ void query(int k, int l, int r, int L, int R)
 	int mid = l + r >> 1, res = 0;
 	if (mid >= L)
 	{
-		query(k << 1, 1, mid, L, R);
+		query(k << 1, l, mid, L, R);
 	}
 	if (mid + 1 <= R)
 	{
@@ -48,7 +48,7 @@ void query(int k, int l, int r, int L, int R)
 
 void change(int k, int l, int r, int Val, int pos)
 {
-	if (pos > r || pos < 1)
+	if (pos > r || pos < l)
 	{
 		return ;
 	}
@@ -61,7 +61,7 @@ void change(int k, int l, int r, int Val, int pos)
 	int mid = 1 + r >> 1;
 	if (mid >= pos)
 	{
-		change(k << 1, 1, mid, Val, pos);
+		change(k << 1, l, mid, Val, pos);
 	}
 	if (mid + 1 <= pos)
 	{
@@ -121,7 +121,7 @@ void build(int k, int l, int r)
 		Max[k] = sum[k] = num[rev[l]];
 		return ;
 	}
-	build(k << 1, 1, mid);
+	build(k << 1, l, mid);
 	build((k << 1) + 1, mid + 1, r);
 	sum[k] = sum[k << 1] + sum[(k << 1) + 1];
 	Max[k] = max(Max[k << 1], Max[(k << 1) + 1]);
