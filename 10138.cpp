@@ -15,14 +15,13 @@
 #include <algorithm>
 #include <cstring>
 using namespace std;
-const int N = 3100;
+const int N = 31000;
 const int M = 124000;
 int n, m, Summ, Maxx;
 int seg[N], rev[M], size[N], son[N], top[N], dep[N];
 int sum[M], num[N], father[N], Max[M];
 int first[N], next1[N], go[N];
 
-//#include <windows.h>
 void query(int k, int l, int r, int L, int R)
 {
 	if (L > r || R < l)
@@ -58,7 +57,7 @@ void change(int k, int l, int r, int Val, int pos)
 		Max[k] = Val;
 		return ;
 	}
-	int mid = 1 + r >> 1;
+	int mid = l + r >> 1;
 	if (mid >= pos)
 	{
 		change(k << 1, l, mid, Val, pos);
@@ -99,7 +98,7 @@ void dfs2(int u, int f)
 		seg[son[u]] = ++seg[0];
 		top[son[u]] = top[u];
 		rev[seg[0]] = son[u];
-		dfs2(v, u);
+		dfs2(son[u], u);
 	}
 	for (e = first[u]; v = go[e], e; e = next1[e])
 	{
