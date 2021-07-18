@@ -24,8 +24,8 @@ void read_data()
 		scanf("%d%d", &s[i], &x[i]);
 }
 
-unsigned int a[MAX_LEN];
-unsigned int b[MAX_LEN];
+unsigned int an[MAX_LEN];
+unsigned int bn[MAX_LEN];
 long long ax[MAX_LEN], bx[MAX_LEN];
 
 
@@ -45,6 +45,22 @@ void printCities()
 		       cities[i].next, cities[i].prev
 		      );
 	}
+}
+
+void printAnBn()
+{
+	printf("an:");
+	for (int i = 0; i <= n; i++)
+	{
+		printf("(%d,%d),", cities[i].id, cities[an[i]].id);
+	}
+	printf("\n");
+	printf("bn:");
+	for (int i = 0; i <= n; i++)
+	{
+		printf("(%d,%d),", cities[i].id, cities[bn[i]].id);
+	}
+	printf("\n");
 }
 
 void preProcess()
@@ -103,47 +119,69 @@ void preProcess()
 				min_i2 = idx1;
 			}
 		}
-		a[idx] = min_i2;
-		b[idx] = min_i1;
+		an[idx] = min_i2;
+		bn[idx] = min_i1;
 		ax[idx] = min2;
 		bx[idx] = min1;
-		printf("id:%d,idx:%d, a %d, b %d\n", i, idx, a[idx], b[idx]);
+		//printf("id:%d,idx:%d, a %d, b %d\n", i, idx, an[idx], bn[idx]);
+		// remove idx from current list
+		if (cities[idx].next != n)
+			cities[cities[idx].next].prev = cities[idx].prev;
+		if (cities[idx].prev != n)
+			cities[cities[idx].prev].next = cities[idx].next;
 	}
-	b[n] = n;
-	a[n] = n;
+	bn[n] = n;
+	an[n] = n;
 	ax[n] = bx[n] = cities[n].h;
+	/*
 	for (int i = 0; i < n; i++)
 	{
 		printf("i:%d, %d,%d, h:%lld,%lld\n", cities[i].id, cities[a[i]].id, cities[b[i]].id,
-		       ax[i], bx[i])
-		;
+		       ax[i], bx[i]
+		      );
 	}
+	*/
 }
 
 int f[18][MAX_LEN];
 long long fax[18][MAX_LEN];
 long long fbx[18][MAX_LEN];
 
+void printArrF(int k)
+{
+	for (int level = 0; level < k; level++)
+	{
+		printf("level %d:", level);
+		for (int i = 0; i <= n; i++)
+		{
+			printf("(%d,%d),", cities[i].id, cities[f[level][i]].id);
+		}
+		printf("\n");
+	}
+}
+
 void build_2tree()
 {
-	for (int i = 0; i < n; i++)
+	printAnBn();
+	for (int i = 0; i <= n; i++)
 	{
-		f[0][i] = a[i];
+		f[0][i] = an[i];
 		fax[0][i] = ax[i];
 		fbx[0][i] = 0;
-		f[1][i] = b[a[i]];
+		f[1][i] = bn[an[i]];
 		fax[1][i] = fax[0][i];
 		fbx[1][i] = bx[f[0][i]];
 	}
 	for (int level = 2; level < 17; level++)
 	{
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i <= n; i++)
 		{
 			f[level][i] = f[level - 1][f[level - 1][i]];
 			fax[level][i] = fax[level - 1][i] + fax[level - 1][f[level - 1][i]];
 			fbx[level][i] = fbx[level - 1][i] + fbx[level - 1][f[level - 1][i]];
 		}
 	}
+	printArrF(3);
 }
 
 void getab(long long &a, long long &b, long long x, int s)
