@@ -79,7 +79,7 @@ void preProcess()
 		min_i2 = cities[min_i1].prev;
 		min2 = llabs(cities[idx].h - cities[min_i2].h);
 		int idx1 = cities[idx].next;
-		int dif = cities[idx1].h - cities[idx].h;
+		long long dif = llabs(cities[idx1].h - cities[idx].h);
 		if (dif < min1)
 		{
 			min2 = min1;
@@ -96,6 +96,7 @@ void preProcess()
 		}
 		else
 		{
+			// printf("dif:%lld,min2:%lld\n", dif, min2);
 			if (dif < min2)
 			{
 				min2 = dif;
@@ -106,7 +107,7 @@ void preProcess()
 		b[idx] = min_i1;
 		ax[idx] = min2;
 		bx[idx] = min1;
-		printf("id:%d,idx:%d, a %d, b %d\n", i, idx, cities[min_i2].id, cities[min_i1].id);
+		printf("id:%d,idx:%d, a %d, b %d\n", i, idx, a[idx], b[idx]);
 	}
 	b[n] = n;
 	a[n] = n;
